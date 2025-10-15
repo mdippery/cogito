@@ -1,0 +1,16 @@
+[package]
+name = "cogito"
+version = "0.1.0"
+authors.workspace = true
+# description
+readme.workspace = true
+# documentation
+# repository
+# homepage
+license.workspace = true
+keywords.workspace = true
+categories.workspace = true
+edition.workspace = true
+# rust-version
+
+[dependencies]

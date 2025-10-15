@@ -1,9 +1,6 @@
 [workspace]
 resolver = "3"
-# members = [
-#   "cogito",
-#   "cogito-openai",
-# ]
+members = ["cogito", "cogito-openai"]
 
 [workspace.package]
 authors = ["Michael Dippery <michael@monkey-robot.com>"]
