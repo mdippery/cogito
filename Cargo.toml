@@ -10,4 +10,4 @@ license = "Apache-2.0"
 keywords = ["ai", "library", "machine-learning"]
 categories = ["api-bindings", "development-tools"]
 edition = "2024"
-# rust-version
+rust-version = "1.85.1"
