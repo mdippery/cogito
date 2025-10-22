@@ -75,12 +75,27 @@ use std::slice::Iter;
 use cogito::AIModel;
 
 /// An OpenAI API client.
+///
+/// # Examples
+///
+/// Create an OpenAI API client with a standard HTTP client factory and
+/// authentication data:
+///
+/// ```
+/// use cogito_openai::client::OpenAIClient;
+/// use hypertyper::{Auth, HTTPClientFactory};
+///
+/// let auth = Auth::new("my-openai-api-key");
+/// let factory = HTTPClientFactory::new("my-package", "v1.0.0");
+/// let client = OpenAIClient::new(auth, factory);
+/// ```
 #[derive(Debug)]
 pub struct OpenAIClient<T: HTTPPost + Sync> {
     auth: Auth,
     service: T,
 }
 
+// TODO: Could this just be a default implementation in cogito?
 impl<T: HTTPPost + Sync> AIClient for OpenAIClient<T> {
     type AIRequest = OpenAIRequest;
     type AIResponse = OpenAIResponse;
@@ -90,6 +105,7 @@ impl<T: HTTPPost + Sync> AIClient for OpenAIClient<T> {
     }
 }
 
+// TODO: Could this be implemented as a default client in cogito?
 impl<T: HTTPPost + Sync> OpenAIClient<T> {
     /// The base URI for OpenAI API requests.
     const BASE_URI: &'static str = "https://api.openai.com/v1/responses";
@@ -99,6 +115,7 @@ impl<T: HTTPPost + Sync> OpenAIClient<T> {
     }
 }
 
+// TODO: Could this be implemented as a default client in cogito?
 impl OpenAIClient<Service> {
     /// Create a new OpenAI client using the given authentication data and
     /// the given factory to create underlying HTTP clients.
@@ -108,7 +125,21 @@ impl OpenAIClient<Service> {
     }
 }
 
-/// A body for an OpenAI API request.
+/// Parameters and data for an OpenAI API request.
+///
+/// # Example
+///
+/// `OpenAIRequest` uses a builder pattern to build up its internal
+/// structure over time, allowing you to use default values for values
+/// you do not care about:
+///
+/// ```
+/// use cogito::client::AIRequest;
+/// use cogito_openai::OpenAIModel;
+/// use cogito_openai::client::OpenAIRequest;
+///
+/// let request = OpenAIRequest::default().model(OpenAIModel::Gpt5).input("Write me a haiku.");
+/// ```
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct OpenAIRequest {
     model: OpenAIModel,
@@ -121,6 +152,7 @@ pub struct OpenAIRequest {
     store: bool,
 }
 
+// TODO: Could this be implemented as a default request in cogito?
 impl AIRequest for OpenAIRequest {
     /// This request uses OpenAI GPT-specific [models](OpenAIModel).
     type Model = OpenAIModel;
@@ -174,6 +206,12 @@ pub struct OpenAIResponse {
 }
 
 impl AIResponse for OpenAIResponse {
+    /// The response from an OpenAI API request.
+    ///
+    /// This is the concatenation of all [output] and is the entire response
+    /// from an OpenAI AI model.
+    ///
+    /// [output]: OpenAIResponse::output
     fn concatenate(&self) -> String {
         self.output()
             .map(|o| o.concatenate())
@@ -184,7 +222,7 @@ impl AIResponse for OpenAIResponse {
 }
 
 impl OpenAIResponse {
-    /// GPT response output.
+    /// GPT response output, as a series of responses.
     ///
     /// There should be at least item in the output, but there could be
     /// multiple output objects.

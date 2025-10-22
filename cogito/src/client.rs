@@ -1,7 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright (C) 2025 Michael Dippery <michael@monkey-robot.com>
 
-//! API clients for various AI services.
+//! Interfaces for AI provider API client implementations.
+//!
+//! These traits define the general behavior expected of all clients for
+//! AI services. Generally they are implemented in individual provider
+//! packages, such as [cogito-openai], so only service provider implementors
+//! need worry about the nitty-gritty of this module.
+//!
+//! [cogito-openai]: https://docs.rs/cogito-openai
 
 use crate::AIModel;
 use hypertyper::HTTPError;
@@ -122,6 +129,11 @@ pub trait AIRequest: Default {
 pub trait AIResponse {
     /// Concatenates the output from an AI service into a single string.
     fn concatenate(&self) -> String;
+
+    // TODO: Add a result() method that returns the result of the call.
+    // By default, this will just call concatenate().
+    // Or maybe I should rename concatenate() to result() and let
+    // individual implementations implement concatenate() on their own.
 }
 
 /// An API result that includes the response if successful or an error

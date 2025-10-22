@@ -1,7 +1,24 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright (C) 2025 Michael Dippery <michael@monkey-robot.com>
 
-// TODO: Library docs.
+//! An implementation of a client for the OpenAI API.
+//!
+//! This provider implements various traits from [cogito] to provide a uniform
+//! way to accessing the OpenAI API. This makes it easy to swap out other
+//! providers for OpenAI in your application, or vice versa.
+//!
+//! This library assumes you have set `$OPENAI_API_KEY` in your API,
+//! although it is possible to configure authentication in other ways; see
+//! [`OpenAIClient::new()`] for details. **This means that you are solely
+//! responsible for paying the costs of API access; the Cogito developers
+//! are not responsible for costs you incur while using this library.**
+//! See the [`client`] module documentation for OpenAI's API pricing, or
+//! visit [OpenAI's platform pricing documentation] for the latest pricing
+//! information.
+//!
+//! [cogito]: https://docs.rs/cogito
+//! [`OpenAIClient::new()`]: client::OpenAIClient::new
+//! [OpenAI's platform pricing documentation]: https://platform.openai.com/docs/pricing
 
 pub mod client;
 
