@@ -95,7 +95,6 @@ pub struct OpenAIClient<T: HTTPPost + Sync> {
     service: T,
 }
 
-// TODO: Could this just be a default implementation in cogito?
 impl<T: HTTPPost + Sync> AIClient for OpenAIClient<T> {
     type AIRequest = OpenAIRequest;
     type AIResponse = OpenAIResponse;
@@ -105,7 +104,6 @@ impl<T: HTTPPost + Sync> AIClient for OpenAIClient<T> {
     }
 }
 
-// TODO: Could this be implemented as a default client in cogito?
 impl<T: HTTPPost + Sync> OpenAIClient<T> {
     /// The base URI for OpenAI API requests.
     const BASE_URI: &'static str = "https://api.openai.com/v1/responses";
@@ -115,7 +113,6 @@ impl<T: HTTPPost + Sync> OpenAIClient<T> {
     }
 }
 
-// TODO: Could this be implemented as a default client in cogito?
 impl OpenAIClient<Service> {
     /// Create a new OpenAI client using the given authentication data and
     /// the given factory to create underlying HTTP clients.
@@ -152,7 +149,6 @@ pub struct OpenAIRequest {
     store: bool,
 }
 
-// TODO: Could this be implemented as a default request in cogito?
 impl AIRequest for OpenAIRequest {
     /// This request uses OpenAI GPT-specific [models](OpenAIModel).
     type Model = OpenAIModel;
