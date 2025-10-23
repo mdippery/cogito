@@ -217,8 +217,14 @@ impl OpenAIResponse {
     /// This is the concatenation of all [output] and is the entire response
     /// from an OpenAI AI model.
     ///
+    /// You should call [`result()`] instead of calling this method directly
+    /// so other API providers can easily be swapped in for the OpenAI
+    /// provider, but it is available in case your code needs it for some
+    /// reason.
+    ///
     /// [output]: OpenAIResponse::output
-    fn concatenate(&self) -> String {
+    /// [`result()`]: OpenAIResponse::result
+    pub fn concatenate(&self) -> String {
         self.output()
             .map(|o| o.concatenate())
             .join("\n")
