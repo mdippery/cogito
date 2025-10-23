@@ -127,13 +127,8 @@ pub trait AIRequest: Default {
 
 /// A response from an AI service's API.
 pub trait AIResponse {
-    /// Concatenates the output from an AI service into a single string.
-    fn concatenate(&self) -> String;
-
-    // TODO: Add a result() method that returns the result of the call.
-    // By default, this will just call concatenate().
-    // Or maybe I should rename concatenate() to result() and let
-    // individual implementations implement concatenate() on their own.
+    /// The result of a request to an AI provider, as a single string.
+    fn result(&self) -> String;
 }
 
 /// An API result that includes the response if successful or an error

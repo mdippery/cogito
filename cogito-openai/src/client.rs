@@ -206,6 +206,12 @@ pub struct OpenAIResponse {
 }
 
 impl AIResponse for OpenAIResponse {
+    fn result(&self) -> String {
+        self.concatenate()
+    }
+}
+
+impl OpenAIResponse {
     /// The response from an OpenAI API request.
     ///
     /// This is the concatenation of all [output] and is the entire response
@@ -219,9 +225,7 @@ impl AIResponse for OpenAIResponse {
             .trim()
             .to_string()
     }
-}
 
-impl OpenAIResponse {
     /// GPT response output, as a series of responses.
     ///
     /// There should be at least item in the output, but there could be
@@ -507,7 +511,7 @@ mod test {
                 "Silent minds awake.",
             ]
             .join("\n");
-            let actual = response.concatenate();
+            let actual = response.result();
             assert_eq!(actual, expected);
         }
 
@@ -532,7 +536,7 @@ mod test {
                 "Silent minds awake.",
             ]
             .join("\n");
-            let actual = response.concatenate();
+            let actual = response.result();
             assert_eq!(actual, expected);
         }
 
@@ -560,7 +564,7 @@ mod test {
                 "A final piece of content",
             ]
             .join("\n");
-            let actual = response.concatenate();
+            let actual = response.result();
             assert_eq!(actual, expected);
         }
 
@@ -600,7 +604,7 @@ mod test {
                 "Silent minds awake.",
             ]
             .join("\n");
-            let actual = response.concatenate();
+            let actual = response.result();
             assert_eq!(actual, expected);
         }
 
@@ -619,7 +623,7 @@ mod test {
                 "Silent minds awake.",
             ]
             .join("\n");
-            let actual = response.concatenate();
+            let actual = response.result();
             assert_eq!(actual, expected);
         }
 
@@ -638,7 +642,7 @@ mod test {
                 "Silent minds awake.",
             ]
             .join("\n");
-            let actual = response.concatenate();
+            let actual = response.result();
             assert_eq!(actual, expected);
         }
 
@@ -651,7 +655,7 @@ mod test {
                 "Dreams of silicon.",
             ]
             .join("\n");
-            let actual = response.concatenate();
+            let actual = response.result();
             assert_eq!(actual, expected);
         }
 
@@ -664,7 +668,7 @@ mod test {
                 "Dreams of silicon.",
             ]
             .join("\n");
-            let actual = response.concatenate();
+            let actual = response.result();
             assert_eq!(actual, expected);
         }
     }
