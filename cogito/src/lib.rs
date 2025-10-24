@@ -20,7 +20,7 @@
 //! The heart and soul of Cogito (if an artificial intelligence module can be
 //! said to have either a heart or a soul) is [`AIClient`]. `AIClient` exposes
 //! a single method, [`send()`], which sends an [`AIRequest`] to an AI
-//! service API (probably by using an underlying HTTP [`Service`] instance).
+//! service's API (probably by using an underlying HTTP [`Service`] instance).
 //!
 //! If `AIClient` is the heart and soul of Cogito, `AIRequest` is the meat
 //! and bones. `AIRequest` instances represent the generalized features of
