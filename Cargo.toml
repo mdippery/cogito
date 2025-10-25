@@ -5,6 +5,7 @@ members = ["cogito", "cogito-openai"]
 [workspace.package]
 authors = ["Michael Dippery <michael@monkey-robot.com>"]
 readme = "README.md"
+repository = "https://github.com/mdippery/cogito"
 # homepage
 license = "Apache-2.0"
 keywords = ["ai", "library", "machine-learning"]

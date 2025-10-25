@@ -2,11 +2,11 @@
 name = "cogito-openai"
 version = "0.1.0"
 authors.workspace = true
-# description
+description = "OpenAI client implementation for Cogito"
 # readme?
 readme.workspace = true
-# documentation
-# repository
+documentation = "https://docs.rs/cogito-openai"
+repository.workspace = true
 # homepage
 license.workspace = true
 keywords.workspace = true
