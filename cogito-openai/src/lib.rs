@@ -7,9 +7,8 @@
 //! way to accessing the OpenAI API. This makes it easy to swap out other
 //! providers for OpenAI in your application, or vice versa.
 //!
-//! This library assumes you have set `$OPENAI_API_KEY` in your API,
-//! although it is possible to configure authentication in other ways; see
-//! [`OpenAIClient::new()`] for details. **This means that you are solely
+//! This library assumes you pass authentication tokens for the OpenAI API
+//! using [`hypertyper::Auth`]. **This means that you are solely
 //! responsible for paying the costs of API access; the Cogito developers
 //! are not responsible for costs you incur while using this library.**
 //! See the [`client`] module documentation for OpenAI's API pricing, or
@@ -19,6 +18,7 @@
 //! [cogito]: https://docs.rs/cogito
 //! [`OpenAIClient::new()`]: client::OpenAIClient::new
 //! [OpenAI's platform pricing documentation]: https://platform.openai.com/docs/pricing
+//! [`hypertyper::Auth`]: https://docs.rs/hypertyper/latest/hypertyper/auth/struct.Auth.html
 
 pub mod client;
 
