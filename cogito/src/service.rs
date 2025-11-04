@@ -19,10 +19,13 @@
 //!
 //! [`hypertyper.service`]: https://docs.rs/hypertyper/latest/hypertyper/service/index.html
 
-use hypertyper::{Auth, HTTPClient, HTTPClientFactory, HTTPPost, HTTPResult, IntoUrl};
+use hypertyper::{HTTPClient, HTTPClientFactory, HTTPPost, HTTPResult, IntoUrl};
 use reqwest::header;
 use serde::Serialize;
 use serde::de::DeserializeOwned;
+
+/// Manages authentication keys for AI service APIs.
+pub type Auth = hypertyper::Auth;
 
 /// A concrete implementation of an HTTP API service.
 ///

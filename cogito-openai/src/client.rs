@@ -12,7 +12,7 @@
 //!
 //! You will need to set up an [OpenAI API account](https://platform.openai.com/docs/overview)
 //! and generate your own authentication key to use OpenAI's API. You key will be passed to
-//! [`OpenAIClient`] using a [`hypertyper::Auth`] struct.
+//! [`OpenAIClient`] using a [`cogito::service::Auth`] struct.
 //!
 //! **Note that you are solely responsible for paying the costs of OpenAI API access.** The
 //! Cogito developers are not responsible for costs you incur while making use of the Cogito OpenAI
@@ -62,8 +62,6 @@
 //! # See Also
 //!
 //! - [OpenAI model documentation](https://platform.openai.com/docs/models)
-//!
-//! [`hypertyper::Auth`]: https://docs.rs/hypertyper/latest/hypertyper/auth/struct.Auth.html
 
 use crate::OpenAIModel;
 use cogito::client::{AIClient, AIRequest, AIResponse, AIResult};
