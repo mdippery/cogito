@@ -6,7 +6,7 @@
 //!
 //! Cogito provides a uniform interface to AI service providers such as
 //! OpenAI and Anthropic Claude, including an abstract representation of
-//! an [`AIModel`], an [`AIClient`]( providing a high-level interface to an
+//! an [`AiModel`], an [`AIClient`]( providing a high-level interface to an
 //! AI service, an [`AIRequest`] to represent common features of AI services,
 //! and a [`Service`] to represent connectivity over HTTP (or other protocols)
 //! or allow testing code to easily mock an AI service. These building blocks
@@ -40,14 +40,14 @@
 //! with these data types directly, unless you are implementing a client
 //! for an AI service.
 //!
-//! [`AIClient`]: client::AIClient
-//! [`AIRequest`]: client::AIRequest
-//! [`AIResponse`]: client::AIResponse
+//! [`AIClient`]: client::AiClient
+//! [`AIRequest`]: client::AiRequest
+//! [`AIResponse`]: client::AiResponse
 //! [`Service`]: service::Service
-//! [`send()`]: client::AIClient::send
-//! [model specification]: client::AIRequest::model
-//! [system prompts]: client::AIRequest::instructions
-//! [input]: client::AIRequest::input
+//! [`send()`]: client::AiClient::send
+//! [model specification]: client::AiRequest::model
+//! [system prompts]: client::AiRequest::instructions
+//! [input]: client::AiRequest::input
 //! [cogito-openai]: https://docs.rs/cogito-openai
 
 pub mod client;
@@ -72,7 +72,7 @@ use std::fmt::Debug;
 /// concrete models. For example:
 ///
 /// ```
-/// # use cogito::AIModel;
+/// # use cogito::AiModel;
 /// #
 /// #[derive(Clone, Copy, Debug, Default)]
 /// pub enum ApocalypticAI {
@@ -84,7 +84,7 @@ use std::fmt::Debug;
 ///     Cylons,
 /// }
 ///
-/// impl AIModel for ApocalypticAI {
+/// impl AiModel for ApocalypticAI {
 ///     fn flagship() -> Self {
 ///         ApocalypticAI::default()
 ///     }
@@ -102,10 +102,10 @@ use std::fmt::Debug;
 ///     }
 /// }
 /// ```
-pub trait AIModel: Clone + Copy + Default + Debug {
+pub trait AiModel: Clone + Copy + Default + Debug {
     /// The service's standard or default model.
     ///
-    /// Often this is the same as the [best](AIModel::best()), but
+    /// Often this is the same as the [best](AiModel::best()), but
     /// there is no guarantee that is true.
     fn flagship() -> Self;
 

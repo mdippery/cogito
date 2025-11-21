@@ -21,7 +21,7 @@
 
 pub mod client;
 
-use cogito::AIModel;
+use cogito::AiModel;
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
@@ -125,7 +125,7 @@ pub enum OpenAIModel {
     O1pro,
 }
 
-impl AIModel for OpenAIModel {
+impl AiModel for OpenAIModel {
     /// OpenAI's standard model.
     fn flagship() -> Self {
         OpenAIModel::default()

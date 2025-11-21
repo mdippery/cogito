@@ -10,31 +10,31 @@
 //!
 //! [cogito-openai]: https://docs.rs/cogito-openai
 
-use crate::AIModel;
-pub use hypertyper::HttpError as AIError;
+use crate::AiModel;
+pub use hypertyper::HttpError as AiError;
 
 /// A client for an AI service's API.
 ///
 /// API clients for specific AI services should adopt this trait to provide
 /// a common interface for interacting with all AI services in a uniform manner.
-pub trait AIClient {
+pub trait AiClient {
     /// The client can make API requests of this type.
-    type AIRequest: AIRequest;
+    type AiRequest: AiRequest;
 
     /// The client receives API responses of this type.
-    type AIResponse: AIResponse;
+    type AiResponse: AiResponse;
 
     /// Sends the request to the AI service and receives a response.
     fn send(
         &self,
-        request: &Self::AIRequest,
-    ) -> impl Future<Output = AIResult<Self::AIResponse>> + Send;
+        request: &Self::AiRequest,
+    ) -> impl Future<Output = AiResult<Self::AiResponse>> + Send;
 }
 
 /// A request to an AI service's API.
 ///
 /// Different AI services may offer different options when making API requests,
-/// and different [`AIClient`] implementations may offer different capabilities.
+/// and different [`AiClient`] implementations may offer different capabilities.
 /// `AIRequest` offers a uniform way to make requests to AI services that
 /// may differ slightly in behavior. If a service does not offer a particular
 /// feature, then its `AIRequest` implementations can do nothing for calls
@@ -50,8 +50,8 @@ pub trait AIClient {
 /// `AIRequest`, you would create an API request like this:
 ///
 /// ```
-/// # use cogito::AIModel;
-/// # use cogito::client::AIRequest;
+/// # use cogito::AiModel;
+/// # use cogito::client::AiRequest;
 /// #
 /// # #[derive(Clone, Copy, Debug, Default)]
 /// # pub enum Model {
@@ -59,7 +59,7 @@ pub trait AIClient {
 /// #     AIModel,
 /// # }
 /// #
-/// # impl AIModel for Model {
+/// # impl AiModel for Model {
 /// #     fn flagship() -> Self {
 /// #         Model::AIModel
 /// #     }
@@ -78,24 +78,24 @@ pub trait AIClient {
 /// # }
 /// #
 /// # #[derive(Default)]
-/// # pub struct ConcreteAPIRequest;
+/// # pub struct ConcreteApiRequest;
 /// #
-/// # impl AIRequest for ConcreteAPIRequest {
+/// # impl AiRequest for ConcreteApiRequest {
 /// #     type Model = Model;
 /// #     fn model(self, model: Self::Model) -> Self { self }
 /// #     fn instructions(self, instructions: impl Into<String>) -> Self { self }
 /// #     fn input(self, input: impl Into<String>) -> Self { self }
 /// # }
 /// #
-/// let request = ConcreteAPIRequest::default()
+/// let request = ConcreteApiRequest::default()
 ///     .model(Model::AIModel)
 ///     .instructions("Be really snarky.")
 ///     .input("How do I make an API request?");
 /// ```
-pub trait AIRequest: Default {
+pub trait AiRequest: Default {
     /// An enum or other data structures providing options for different
     /// AI models, which are specific to each service.
-    type Model: AIModel;
+    type Model: AiModel;
 
     /// Sets the model used by the API request and returns a new
     /// request.
@@ -114,7 +114,7 @@ pub trait AIRequest: Default {
     /// specified. If not, this method can be a no-op.
     ///
     /// Often specialized instructions will take precedence over the
-    /// request's [input](AIRequest::input). Consult the documentation
+    /// request's [input](AiRequest::input). Consult the documentation
     /// for your specific service to see if that is the case.
     fn instructions(self, instructions: impl Into<String>) -> Self;
 
@@ -126,11 +126,11 @@ pub trait AIRequest: Default {
 }
 
 /// A response from an AI service's API.
-pub trait AIResponse {
+pub trait AiResponse {
     /// The result of a request to an AI provider, as a single string.
     fn result(&self) -> String;
 }
 
 /// An API result that includes the response if successful or an error
 /// if unsuccessful.
-pub type AIResult<T> = Result<T, AIError>;
+pub type AiResult<T> = Result<T, AiError>;

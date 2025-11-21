@@ -1,4 +1,4 @@
-use cogito::client::{AIClient, AIRequest};
+use cogito::client::{AiClient, AiRequest};
 use cogito_openai::OpenAIModel;
 use cogito_openai::client::{OpenAIClient, OpenAIRequest};
 use hypertyper::prelude::*;

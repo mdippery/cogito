@@ -64,7 +64,7 @@
 //! - [OpenAI model documentation](https://platform.openai.com/docs/models)
 
 use crate::OpenAIModel;
-use cogito::client::{AIClient, AIRequest, AIResponse, AIResult};
+use cogito::client::{AiClient, AiRequest, AiResponse, AiResult};
 use cogito::service::Service;
 use hypertyper::prelude::*;
 use itertools::Itertools;
@@ -72,7 +72,7 @@ use serde::{Deserialize, Serialize};
 use std::slice::Iter;
 
 #[cfg(doc)]
-use cogito::AIModel;
+use cogito::AiModel;
 
 /// An OpenAI API client.
 ///
@@ -95,11 +95,11 @@ pub struct OpenAIClient<T: HttpPost + Sync> {
     service: T,
 }
 
-impl<T: HttpPost + Sync> AIClient for OpenAIClient<T> {
-    type AIRequest = OpenAIRequest;
-    type AIResponse = OpenAIResponse;
+impl<T: HttpPost + Sync> AiClient for OpenAIClient<T> {
+    type AiRequest = OpenAIRequest;
+    type AiResponse = OpenAIResponse;
 
-    async fn send(&self, request: &Self::AIRequest) -> AIResult<Self::AIResponse> {
+    async fn send(&self, request: &Self::AiRequest) -> AiResult<Self::AiResponse> {
         self.service.post(Self::BASE_URI, &self.auth, request).await
     }
 }
@@ -131,7 +131,7 @@ impl OpenAIClient<Service> {
 /// you do not care about:
 ///
 /// ```
-/// use cogito::client::AIRequest;
+/// use cogito::client::AiRequest;
 /// use cogito_openai::OpenAIModel;
 /// use cogito_openai::client::OpenAIRequest;
 ///
@@ -149,7 +149,7 @@ pub struct OpenAIRequest {
     store: bool,
 }
 
-impl AIRequest for OpenAIRequest {
+impl AiRequest for OpenAIRequest {
     /// This request uses OpenAI GPT-specific [models](OpenAIModel).
     type Model = OpenAIModel;
 
@@ -201,7 +201,7 @@ pub struct OpenAIResponse {
     output: Vec<OpenAIOutput>,
 }
 
-impl AIResponse for OpenAIResponse {
+impl AiResponse for OpenAIResponse {
     fn result(&self) -> String {
         self.concatenate()
     }
@@ -359,7 +359,7 @@ mod test {
     mod client {
         use super::load_data;
         use crate::client::{OpenAIClient, OpenAIRequest};
-        use cogito::client::{AIClient, AIRequest};
+        use cogito::client::{AiClient, AiRequest};
         use hypertyper::prelude::*;
         use serde::Serialize;
         use serde::de::DeserializeOwned;
