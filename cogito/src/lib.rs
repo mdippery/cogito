@@ -122,3 +122,20 @@ pub trait AiModel: Clone + Copy + Default + Debug {
     /// The fastest model available for a given LLM.
     fn fastest() -> Self;
 }
+
+/// Convenience module for the most common Cogito imports.
+///
+/// # Example
+///
+/// Add
+///
+/// ```
+/// use cogito::prelude::*;
+/// ```
+///
+/// to use the most common Cogito traits and data structures in your project.
+pub mod prelude {
+    pub use crate::AiModel;
+    pub use crate::client::{AiClient, AiError, AiRequest, AiResponse, AiResult};
+    pub use crate::service::{Auth, Service};
+}

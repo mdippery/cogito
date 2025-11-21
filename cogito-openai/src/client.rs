@@ -64,8 +64,7 @@
 //! - [OpenAI model documentation](https://platform.openai.com/docs/models)
 
 use crate::OpenAIModel;
-use cogito::client::{AiClient, AiRequest, AiResponse, AiResult};
-use cogito::service::Service;
+use cogito::prelude::*;
 use hypertyper::prelude::*;
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
