@@ -1,7 +1,7 @@
 use cogito::client::{AIClient, AIRequest};
 use cogito_openai::OpenAIModel;
 use cogito_openai::client::{OpenAIClient, OpenAIRequest};
-use hypertyper::{Auth, HTTPClientFactory};
+use hypertyper::prelude::*;
 
 // These tests aren't particularly interesting and mostly serve to ensure
 // that we can actually connect to the OpenAI service.
@@ -10,7 +10,7 @@ use hypertyper::{Auth, HTTPClientFactory};
 async fn it_sends_a_request_using_gpt_4o() {
     let auth =
         Auth::from_env("OPENAI_API_KEY").expect("Could not create auth. Is $OPENAI_API_KEY set?");
-    let factory = HTTPClientFactory::new(env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
+    let factory = HttpClientFactory::new(env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
     let client = OpenAIClient::new(auth, factory);
     let req = OpenAIRequest::default()
         .model(OpenAIModel::Gpt4o)
@@ -25,7 +25,7 @@ async fn it_sends_a_request_using_gpt_4o() {
 async fn it_sends_a_request_using_gpt_5nano() {
     let auth =
         Auth::from_env("OPENAI_API_KEY").expect("Could not create auth. Is $OPENAI_API_KEY set?");
-    let factory = HTTPClientFactory::new(env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
+    let factory = HttpClientFactory::new(env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
     let client = OpenAIClient::new(auth, factory);
     let req = OpenAIRequest::default()
         .model(OpenAIModel::Gpt5nano)

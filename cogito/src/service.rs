@@ -20,8 +20,8 @@
 //! [`hypertyper.service`]: https://docs.rs/hypertyper/latest/hypertyper/service/index.html
 
 #[doc(inline)]
-pub use hypertyper::Auth;
-use hypertyper::{HTTPClient, HTTPClientFactory, HTTPPost, HTTPResult, IntoUrl};
+pub use hypertyper::prelude::Auth;
+use hypertyper::prelude::*;
 use reqwest::header;
 use serde::Serialize;
 use serde::de::DeserializeOwned;
@@ -34,25 +34,25 @@ use serde::de::DeserializeOwned;
 /// clients should use this `Service` by default.
 #[derive(Debug)]
 pub struct Service {
-    client: HTTPClient,
+    client: HttpClient,
 }
 
 impl Service {
     /// Creates a new HTTP service that communicate using clients from the
     /// given factory.
-    pub fn new(factory: HTTPClientFactory) -> Self {
+    pub fn new(factory: HttpClientFactory) -> Self {
         let client = factory.create();
         Self { client }
     }
 }
 
-impl HTTPPost for Service {
+impl HttpPost for Service {
     /// Send a POST request to the `uri` with the JSON object `data` as
     /// the POST request body.
     ///
     /// The response is deserialized from a string to the JSON object
     /// specified by the `R` type parameter.
-    async fn post<U, D, R>(&self, uri: U, auth: &Auth, data: &D) -> HTTPResult<R>
+    async fn post<U, D, R>(&self, uri: U, auth: &Auth, data: &D) -> HttpResult<R>
     where
         U: IntoUrl + Send,
         D: Serialize + Sync,

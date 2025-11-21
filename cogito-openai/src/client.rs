@@ -66,7 +66,7 @@
 use crate::OpenAIModel;
 use cogito::client::{AIClient, AIRequest, AIResponse, AIResult};
 use cogito::service::Service;
-use hypertyper::{Auth, HTTPClientFactory, HTTPPost};
+use hypertyper::prelude::*;
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
 use std::slice::Iter;
@@ -83,19 +83,19 @@ use cogito::AIModel;
 ///
 /// ```
 /// use cogito_openai::client::OpenAIClient;
-/// use hypertyper::{Auth, HTTPClientFactory};
+/// use hypertyper::prelude::*;
 ///
 /// let auth = Auth::new("my-openai-api-key");
-/// let factory = HTTPClientFactory::new("my-package", "v1.0.0");
+/// let factory = HttpClientFactory::new("my-package", "v1.0.0");
 /// let client = OpenAIClient::new(auth, factory);
 /// ```
 #[derive(Debug)]
-pub struct OpenAIClient<T: HTTPPost + Sync> {
+pub struct OpenAIClient<T: HttpPost + Sync> {
     auth: Auth,
     service: T,
 }
 
-impl<T: HTTPPost + Sync> AIClient for OpenAIClient<T> {
+impl<T: HttpPost + Sync> AIClient for OpenAIClient<T> {
     type AIRequest = OpenAIRequest;
     type AIResponse = OpenAIResponse;
 
@@ -104,7 +104,7 @@ impl<T: HTTPPost + Sync> AIClient for OpenAIClient<T> {
     }
 }
 
-impl<T: HTTPPost + Sync> OpenAIClient<T> {
+impl<T: HttpPost + Sync> OpenAIClient<T> {
     /// The base URI for OpenAI API requests.
     const BASE_URI: &'static str = "https://api.openai.com/v1/responses";
 
@@ -116,7 +116,7 @@ impl<T: HTTPPost + Sync> OpenAIClient<T> {
 impl OpenAIClient<Service> {
     /// Create a new OpenAI client using the given authentication data and
     /// the given factory to create underlying HTTP clients.
-    pub fn new(auth: Auth, factory: HTTPClientFactory) -> Self {
+    pub fn new(auth: Auth, factory: HttpClientFactory) -> Self {
         let service = Service::new(factory);
         Self::with_service(auth, service)
     }
@@ -360,14 +360,14 @@ mod test {
         use super::load_data;
         use crate::client::{OpenAIClient, OpenAIRequest};
         use cogito::client::{AIClient, AIRequest};
-        use hypertyper::{Auth, HTTPPost, HTTPResult, IntoUrl};
+        use hypertyper::prelude::*;
         use serde::Serialize;
         use serde::de::DeserializeOwned;
 
         struct TestAPIService {}
 
-        impl HTTPPost for TestAPIService {
-            async fn post<U, D, R>(&self, _uri: U, _auth: &Auth, _data: &D) -> HTTPResult<R>
+        impl HttpPost for TestAPIService {
+            async fn post<U, D, R>(&self, _uri: U, _auth: &Auth, _data: &D) -> HttpResult<R>
             where
                 U: IntoUrl + Send,
                 D: Serialize + Sync,
