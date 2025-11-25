@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Acceptable models are:
+#
+#   - claude-sonnet-4-5 (best, flagship)    $ 3 / $15
+#   - claude-haiku-4-5  (fastest, cheapest) $ 1 / $ 5
+#   - claude-opus-4-5                       $ 5 / $25
+#   - claude-opus-4-1                       $15 / $75
+#
+# (Prices are input per million tokens / output per million tokens)
+
+curl -s https://api.anthropic.com/v1/messages \
+  --header "x-api-key: $CLAUDE_API_KEY" \
+  --header "anthropic-version: 2023-06-01" \
+  --header "content-type: application/json" \
+  --data '{
+        "model": "claude-sonnet-4-5",
+        "max_tokens": 1024,
+        "messages": [
+            {"role": "user", "content": "Hello, world"}
+        ]
+    }'
