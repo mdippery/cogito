@@ -14,7 +14,7 @@ use hypertyper::prelude::*;
 let auth = Auth::from_env("CLAUDE_API_KEY")?;
 let factory = HttpClientFactory::new(env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
 let client = ClaudeClient::new(auth, factory);
-let request = ClaudeRequest::default().model(ClaudeModel::Sonnet_4_5).input("Write me a haiku.");
+let request = ClaudeRequest::default().model(ClaudeModel::Sonnet45).input("Write me a haiku.");
 let response = client.send(&request).await?.result();
 ```
 
