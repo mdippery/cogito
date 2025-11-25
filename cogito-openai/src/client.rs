@@ -755,32 +755,4 @@ mod test {
             assert_eq!(actual, expected);
         }
     }
-
-    mod model {
-        use super::super::*;
-
-        #[test]
-        fn it_returns_valid_descriptors() {
-            let test_cases = vec![
-                (OpenAIModel::Gpt5, "gpt-5"),
-                (OpenAIModel::Gpt5mini, "gpt-5-mini"),
-                (OpenAIModel::Gpt5nano, "gpt-5-nano"),
-                (OpenAIModel::Gpt4o, "gpt-4o"),
-                (OpenAIModel::Gpt4omini, "gpt-4o-mini"),
-                (OpenAIModel::Gpt4_1, "gpt-4.1"),
-                (OpenAIModel::Gpt4_1mini, "gpt-4.1-mini"),
-                (OpenAIModel::Gpt4_1nano, "gpt-4.1-nano"),
-                (OpenAIModel::O4mini, "o4-mini"),
-                (OpenAIModel::O3, "o3"),
-                (OpenAIModel::O3mini, "o3-mini"),
-                (OpenAIModel::O3pro, "o3-pro"),
-                (OpenAIModel::O1, "o1"),
-                (OpenAIModel::O1pro, "o1-pro"),
-            ];
-
-            for (model, descriptor) in test_cases {
-                assert_eq!(model.to_string(), descriptor, "Model::{:?}", model);
-            }
-        }
-    }
 }

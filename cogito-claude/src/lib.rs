@@ -134,3 +134,22 @@ impl fmt::Display for ClaudeModel {
         f.write_fmt(format_args!("{}", s))
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_returns_a_valid_display_string() {
+        let test_cases = vec![
+            (ClaudeModel::Sonnet45, "claude-sonnet-4-5"),
+            (ClaudeModel::Haiku45, "claude-haiku-4-5"),
+            (ClaudeModel::Opus45, "claude-opus-4-5"),
+            (ClaudeModel::Opus41, "claude-opus-4-1"),
+        ];
+
+        for (model, descriptor) in test_cases {
+            assert_eq!(model.to_string(), descriptor, "ClaudeModel::{:?}", model);
+        }
+    }
+}
