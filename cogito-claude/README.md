@@ -1,20 +1,20 @@
-# cogito-openai
+# cogito-claude
 
-**cogito-openai** is an OpenAI provider that adheres to the [Cogito]
-specification.
+**cogito-claude** is a provider for Anthropic Claude that adheres to the
+[Cogito] specification.
 
 ## Usage
 
 ```rust
 use cogito::client::{AIClient, AIRequest, AIResponse};
-use cogito_openai::OpenAIModel;
-use cogito_openai::client::{OpenAIClient, OpenAIRequest};
+use cogito_claude::ClaudeModel;
+use cogito_claude::client::{ClaudeClient, ClaudeRequest};
 use hypertyper::prelude::*;
 
-let auth = Auth::from_env("OPENAI_API_KEY")?;
+let auth = Auth::from_env("CLAUDE_API_KEY")?;
 let factory = HttpClientFactory::new(env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
-let client = OpenAIClient::new(auth, factory);
-let request = OpenAIRequest::default().model(OpenAIModel::Gpt5).input("Write me a haiku.");
+let client = ClaudeClient::new(auth, factory);
+let request = ClaudeRequest::default().model(ClaudeModel::Sonnet_4_5).input("Write me a haiku.");
 let response = client.send(&request).await?.result();
 ```
 

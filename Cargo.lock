@@ -58,6 +58,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "cogito-claude"
+version = "0.1.0"
+
+[[package]]
 name = "cogito-openai"
 version = "0.2.0"
 dependencies = [

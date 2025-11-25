@@ -1,0 +1,16 @@
+[package]
+name = "cogito-claude"
+version = "0.1.0"
+authors.workspace = true
+description = "Anthropic Claude client implementation for Cogito"
+readme = "README.md"
+documentation = "https://docs.rs/cogito-claude"
+repository.workspace = true
+#homepage
+license.workspace = true
+keywords.workspace = true
+categories.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
