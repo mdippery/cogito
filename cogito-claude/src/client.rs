@@ -86,33 +86,6 @@ impl ClaudeClient<Service> {
     }
 }
 
-/* TODO: Test these JSON response models.
- *
- * But also, in cogito-openai, the individual submodels are pub, whereas
- * here, they are not pub; and in cogito-openai, there are doctests for
- * some of the simpler submodels, but we cannot have doc tests for
- * non-pub structs.
- *
- * We should be consistent across crates, so either we should make these
- * submodels pub and write doctests for them, or we should make the
- * submodels in cogito-openai non-pub and then necessarily change the
- * tests from doctests to regular tests (which might be better for
- * performance reasons anyway).
- *
- * I hate to pollute the API with unnecessary structs, but some of the
- * submodels, such as ClaudeUsage, might actually be useful to consumers
- * of this crate.
- *
- * But then I also don't feel like going through and writing a ton of
- * simple accessor methods, so if these structs do become pub, then maybe
- * the attributes should just be pub as well; but I kind of hate that
- * because then what if I want to write more complicated accessors
- * eventually? Also, if attributes for submodels are pub here, they should
- * be pub in cogito-openai, too, for consistency...but I already wrote all
- * those nice accessor methods in cogito-openai, and I hate to get rid of
- * them.
- */
-
 /// Parameters and data for a Claude API request.
 ///
 /// # Examples
@@ -222,8 +195,6 @@ impl ClaudeResponse {
     ///
     /// There should be at least one item in the output, but there could
     /// be multiple output objects.
-    // TODO: This is private. Make OpenAIResponse::output() and
-    //       OpenAIResponse::concatenate() private to match?
     fn content(&self) -> Iter<'_, ClaudeContent> {
         self.content.iter()
     }
@@ -255,6 +226,13 @@ struct ClaudeCacheCreation {
 
 #[cfg(test)]
 mod tests {
+    use std::fs;
+
+    fn load_data(filename: &str) -> String {
+        let path = format!("tests/data/{filename}.json");
+        fs::read_to_string(path).expect("could not load test data")
+    }
+
     mod role {
         use super::super::ClaudeRole;
         use serde::{Deserialize, Serialize};
@@ -292,6 +270,224 @@ mod tests {
                 ));
                 assert_eq!(actual.role, role, "ClaudeRole::{:?}", role);
             }
+        }
+    }
+
+    mod client {
+        use super::super::{ClaudeClient, ClaudeRequest};
+        use super::load_data;
+        use cogito::prelude::*;
+        use hypertyper::prelude::*;
+        use serde::Serialize;
+        use serde::de::DeserializeOwned;
+
+        #[derive(Default)]
+        struct TestApiService {}
+
+        impl HttpPost for TestApiService {
+            async fn post<U, D, R>(&self, _uri: U, _auth: &Auth, _data: &D) -> HttpResult<R>
+            where
+                U: IntoUrl + Send,
+                D: Serialize + Sync,
+                R: DeserializeOwned,
+            {
+                let data = self.load_data();
+                Ok(serde_json::from_str(&data)?)
+            }
+        }
+
+        impl TestApiService {
+            fn load_data(&self) -> String {
+                load_data("responses_multi")
+            }
+        }
+
+        impl ClaudeClient<TestApiService> {
+            fn test() -> Self {
+                let auth = Auth::new("some-api-key");
+                ClaudeClient::with_service(auth, TestApiService::default())
+            }
+        }
+
+        #[tokio::test]
+        async fn it_sends_a_request_and_returns_a_response() {
+            let client = ClaudeClient::test();
+            let request = ClaudeRequest::default().input("Hello, world");
+            let response = client.send(&request).await;
+            assert!(response.is_ok());
+
+            let response = response.unwrap();
+            let text = response.result();
+            assert_eq!(
+                text,
+                "Hello! How can I help you today?\nI am a friendly robot.\nBeep beep!"
+            )
+        }
+    }
+
+    mod request {
+        use super::super::ClaudeRequest;
+        use crate::ClaudeModel;
+        use crate::client::ClaudeRole;
+        use cogito::prelude::*;
+
+        #[test]
+        fn it_serializes() {
+            let request = ClaudeRequest::default()
+                .model(ClaudeModel::Haiku45)
+                .input("Serialize me, Claude!");
+            let expected = r#"{
+  "model": "claude-haiku-4-5",
+  "max_tokens": 1024,
+  "messages": [
+    {
+      "role": "user",
+      "content": "Serialize me, Claude!"
+    }
+  ]
+}"#;
+            let actual = serde_json::to_string_pretty(&request).expect("could not serialize json");
+            assert_eq!(
+                actual, expected,
+                "\n\nleft:\n{actual}\n\nright:\n{expected}\n"
+            )
+        }
+
+        #[test]
+        fn it_deserializes() {
+            let data = r#"{
+  "model": "claude-haiku-4-5",
+  "max_tokens": 1024,
+  "messages": [
+    {
+      "role": "user",
+      "content": "Serialize me, Claude!"
+    }
+  ]
+}"#;
+            let request: ClaudeRequest =
+                serde_json::from_str(data).expect("could not deserialize json");
+            assert_eq!(request.model, ClaudeModel::Haiku45);
+            assert_eq!(request.max_tokens, 1024);
+            assert_eq!(request.messages.len(), 1);
+            let message = request
+                .messages
+                .iter()
+                .nth(0)
+                .expect("could not get message");
+            assert_eq!(message.role, ClaudeRole::User);
+            assert_eq!(message.content, "Serialize me, Claude!");
+        }
+    }
+
+    mod response {
+        use super::super::ClaudeResponse;
+        use super::load_data;
+        use crate::client::ClaudeRole;
+        use cogito::prelude::*;
+
+        fn load_response(filename: &str) -> ClaudeResponse {
+            let data = load_data(filename);
+            serde_json::from_str(&data).expect("could not parse json")
+        }
+
+        #[test]
+        fn it_returns_an_id() {
+            let resp = load_response("responses");
+            assert_eq!(resp.id, "msg_01UiL2duVWmZVLJf83nn6gLQ");
+        }
+
+        #[test]
+        fn it_returns_a_response_type() {
+            let resp = load_response("responses");
+            assert_eq!(resp.response_type, "message")
+        }
+
+        #[test]
+        fn it_returns_its_role() {
+            let resp = load_response("responses");
+            assert_eq!(resp.role, ClaudeRole::Assistant);
+        }
+
+        #[test]
+        fn it_returns_usage() {
+            let resp = load_response("responses");
+            let usage = resp.usage;
+            assert_eq!(usage.input_tokens, 10);
+            assert_eq!(usage.cache_creation_input_tokens, 0);
+            assert_eq!(usage.cache_read_input_tokens, 0);
+            assert_eq!(usage.output_tokens, 12);
+            assert_eq!(usage.cache_creation.ephemeral_5m_input_tokens, 0);
+            assert_eq!(usage.cache_creation.ephemeral_1h_input_tokens, 0);
+        }
+
+        #[test]
+        fn it_concatenates_a_single_response() {
+            let resp = load_response("responses");
+            let text = resp.result();
+            assert_eq!(text, "Hello! How can I help you today?");
+        }
+
+        #[test]
+        fn it_concatenates_many_responses() {
+            let resp = load_response("responses_multi");
+            let text = resp.result();
+            assert_eq!(
+                text,
+                "Hello! How can I help you today?\nI am a friendly robot.\nBeep beep!"
+            );
+        }
+    }
+
+    mod content {
+        use super::super::ClaudeContent;
+
+        #[test]
+        fn it_deserializes() {
+            let json_str = r#"{"type": "text", "text": "Hello! How can I help you today?"}"#;
+            let content: ClaudeContent =
+                serde_json::from_str(json_str).expect("could not parse json");
+            assert_eq!(content.content_type, "text");
+            assert_eq!(content.text, "Hello! How can I help you today?");
+        }
+    }
+
+    mod usage {
+        use super::super::ClaudeUsage;
+
+        #[test]
+        fn it_deserializes() {
+            let json_str = r#"{
+"input_tokens": 1024,
+"cache_creation_input_tokens": 512,
+"cache_read_input_tokens": 256,
+"cache_creation": {
+    "ephemeral_5m_input_tokens": 10,
+    "ephemeral_1h_input_tokens": 20
+},
+"output_tokens": 128,
+"service_tier": "standard"
+}"#;
+            let usage: ClaudeUsage = serde_json::from_str(json_str).expect("could not parse json");
+            assert_eq!(usage.input_tokens, 1024);
+            assert_eq!(usage.cache_creation_input_tokens, 512);
+            assert_eq!(usage.cache_read_input_tokens, 256);
+            assert_eq!(usage.output_tokens, 128);
+            assert_eq!(usage.cache_creation.ephemeral_5m_input_tokens, 10);
+            assert_eq!(usage.cache_creation.ephemeral_1h_input_tokens, 20);
+        }
+    }
+
+    mod cache_creation {
+        use super::super::ClaudeCacheCreation;
+
+        #[test]
+        fn it_deserializes() {
+            let json_str = r#"{"ephemeral_5m_input_tokens": 10, "ephemeral_1h_input_tokens": 20}"#;
+            let cache: ClaudeCacheCreation =
+                serde_json::from_str(json_str).expect("could not parse json");
+            assert_eq!(cache.ephemeral_5m_input_tokens, 10);
+            assert_eq!(cache.ephemeral_1h_input_tokens, 20);
         }
     }
 }

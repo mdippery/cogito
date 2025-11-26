@@ -293,9 +293,10 @@ mod test {
         use serde::Serialize;
         use serde::de::DeserializeOwned;
 
-        struct TestAPIService {}
+        #[derive(Default)]
+        struct TestApiService {}
 
-        impl HttpPost for TestAPIService {
+        impl HttpPost for TestApiService {
             async fn post<U, D, R>(&self, _uri: U, _auth: &Auth, _data: &D) -> HttpResult<R>
             where
                 U: IntoUrl + Send,
@@ -307,20 +308,16 @@ mod test {
             }
         }
 
-        impl TestAPIService {
-            pub fn new() -> Self {
-                Self {}
-            }
-
+        impl TestApiService {
             fn load_data(&self) -> String {
                 load_data("responses")
             }
         }
 
-        impl OpenAIClient<TestAPIService> {
+        impl OpenAIClient<TestApiService> {
             fn test() -> Self {
                 let auth = Auth::new("some-api-key");
-                OpenAIClient::with_service(auth, TestAPIService::new())
+                OpenAIClient::with_service(auth, TestApiService::default())
             }
         }
 
