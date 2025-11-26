@@ -62,6 +62,7 @@ name = "cogito-claude"
 version = "0.1.0"
 dependencies = [
  "cogito",
+ "hypertyper",
  "serde",
  "serde_json",
 ]

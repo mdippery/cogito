@@ -93,7 +93,7 @@ impl OpenAIClient<Service> {
 
 /// Parameters and data for an OpenAI API request.
 ///
-/// # Example
+/// # Examples
 ///
 /// `OpenAIRequest` uses a builder pattern to build up its internal
 /// structure over time, allowing you to use default values for values
@@ -124,13 +124,9 @@ impl AiRequest for OpenAIRequest {
 
     /// Sets the model used by the OpenAI API request.
     ///
-    /// If not specified, the [default](OpenAIModel::default()) model, gpt-4o,
-    /// will be used. [According to OpenAI][1], gpt-4.1 also "offers a
-    /// solid combination of intelligence, speed, and cost effectiveness".
-    /// If you are on a budget, you can also try using the
-    /// [least expensive](OpenAIModel::cheapest()), too.
-    ///
-    /// [1]: https://platform.openai.com/docs/guides/text?api-mode=responses#choosing-a-model
+    /// If not specified, the [default](OpenAIModel::default()) model
+    /// will be used. If you are on a budget, you can also try using the
+    /// [least expensive](OpenAIModel::cheapest()) instead.
     fn model(self, model: OpenAIModel) -> Self {
         Self { model, ..self }
     }

@@ -42,6 +42,8 @@
 //! [`cogito::service::Auth`]: https://docs.rs/cogito/latest/cogito/service/struct.Auth.html
 //! [pricing documentation]: https://platform.claude.com/docs/en/about-claude/pricing
 
+pub mod client;
+
 use cogito::AiModel;
 use serde::{Deserialize, Serialize};
 use std::fmt;
