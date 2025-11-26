@@ -214,15 +214,9 @@ struct ClaudeContent {
 struct ClaudeUsage {
     input_tokens: u64,
     output_tokens: u64,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    cache_creation_input_tokens: Option<u64>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    cache_read_input_tokens: Option<u64>,
-
-    #[serde(skip_serializing_if = "Option::is_none")]
-    cache_creation: Option<ClaudeCacheCreation>,
+    cache_creation_input_tokens: u64,
+    cache_read_input_tokens: u64,
+    cache_creation: ClaudeCacheCreation,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -421,16 +415,11 @@ mod tests {
             let resp = load_response("responses");
             let usage = resp.usage;
             assert_eq!(usage.input_tokens, 10);
-            assert!(usage.cache_creation_input_tokens.is_some());
-            assert_eq!(usage.cache_creation_input_tokens.unwrap(), 0);
-            assert!(usage.cache_read_input_tokens.is_some());
-            assert_eq!(usage.cache_read_input_tokens.unwrap(), 0);
+            assert_eq!(usage.cache_creation_input_tokens, 0);
+            assert_eq!(usage.cache_read_input_tokens, 0);
             assert_eq!(usage.output_tokens, 12);
-
-            assert!(usage.cache_creation.is_some());
-            let cache = usage.cache_creation.unwrap();
-            assert_eq!(cache.ephemeral_5m_input_tokens, 0);
-            assert_eq!(cache.ephemeral_1h_input_tokens, 0);
+            assert_eq!(usage.cache_creation.ephemeral_5m_input_tokens, 0);
+            assert_eq!(usage.cache_creation.ephemeral_1h_input_tokens, 0);
         }
 
         #[test]
@@ -482,29 +471,11 @@ mod tests {
 }"#;
             let usage: ClaudeUsage = serde_json::from_str(json_str).expect("could not parse json");
             assert_eq!(usage.input_tokens, 1024);
-            assert!(usage.cache_creation_input_tokens.is_some());
-            assert_eq!(usage.cache_creation_input_tokens.unwrap(), 512);
-            assert!(usage.cache_read_input_tokens.is_some());
-            assert_eq!(usage.cache_read_input_tokens.unwrap(), 256);
+            assert_eq!(usage.cache_creation_input_tokens, 512);
+            assert_eq!(usage.cache_read_input_tokens, 256);
             assert_eq!(usage.output_tokens, 128);
-
-            assert!(usage.cache_creation.is_some());
-            let cache = usage.cache_creation.unwrap();
-            assert_eq!(cache.ephemeral_5m_input_tokens, 10);
-            assert_eq!(cache.ephemeral_1h_input_tokens, 20);
-        }
-
-        #[test]
-        fn it_deserializes_when_optional_properties_are_not_present() {
-            let json_str = r#"{
-"input_tokens": 1024,
-"output_tokens": 128,
-"service_tier": "standard"
-}"#;
-            let usage: ClaudeUsage = serde_json::from_str(json_str).expect("could not parse json");
-            assert!(usage.cache_read_input_tokens.is_none());
-            assert!(usage.cache_creation_input_tokens.is_none());
-            assert!(usage.cache_creation.is_none());
+            assert_eq!(usage.cache_creation.ephemeral_5m_input_tokens, 10);
+            assert_eq!(usage.cache_creation.ephemeral_1h_input_tokens, 20);
         }
     }
 
