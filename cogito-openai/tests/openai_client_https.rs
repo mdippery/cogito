@@ -1,6 +1,5 @@
-use cogito::client::{AiClient, AiRequest};
-use cogito_openai::OpenAIModel;
-use cogito_openai::client::{OpenAIClient, OpenAIRequest};
+use cogito::prelude::*;
+use cogito_openai::prelude::*;
 use hypertyper::prelude::*;
 
 // These tests aren't particularly interesting and mostly serve to ensure

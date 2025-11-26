@@ -195,6 +195,20 @@ impl fmt::Display for OpenAIModel {
     }
 }
 
+/// Convenience module for splat imports.
+///
+/// You can import the most common traits and data structures into your
+/// project using
+///
+/// ```
+/// use cogito_openai::prelude::*;
+/// ```
+pub mod prelude {
+    pub use crate::OpenAIModel;
+    pub use crate::client::{OpenAIClient, OpenAIRequest, OpenAIResponse};
+    pub use cogito::AiModel;
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

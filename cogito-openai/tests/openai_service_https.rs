@@ -3,10 +3,8 @@
 // with openai_client_https, but it ensures we are testing the integration
 // of each individual component.
 
-use cogito::client::AiRequest;
-use cogito::service::Service;
-use cogito_openai::OpenAIModel;
-use cogito_openai::client::{OpenAIRequest, OpenAIResponse};
+use cogito::prelude::*;
+use cogito_openai::prelude::*;
 use hypertyper::prelude::*;
 
 #[tokio::test]
