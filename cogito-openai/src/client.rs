@@ -185,8 +185,7 @@ impl OpenAIResponse {
     ///
     /// [output]: OpenAIResponse::output
     /// [`result()`]: OpenAIResponse::result
-    // TODO: Should this be non-pub? It's the same thing as result().
-    pub fn concatenate(&self) -> String {
+    fn concatenate(&self) -> String {
         self.output()
             .map(|o| o.concatenate())
             .join("\n")
