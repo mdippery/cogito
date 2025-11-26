@@ -197,9 +197,7 @@ impl OpenAIResponse {
     ///
     /// There should be at least item in the output, but there could be
     /// multiple output objects.
-    // TODO: Should this be non-pub?
-    //       Will have to change integration tests if it is.
-    pub fn output(&self) -> Iter<'_, OpenAIOutput> {
+    fn output(&self) -> Iter<'_, OpenAIOutput> {
         self.output.iter()
     }
 }

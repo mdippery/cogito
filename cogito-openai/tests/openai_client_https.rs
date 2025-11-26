@@ -16,8 +16,8 @@ async fn it_sends_a_request_using_gpt_4o() {
         .input("write a haiku about ai");
     let resp = client.send(&req).await;
     let resp = resp.expect("could not make OpenAI API request");
-    assert_eq!(resp.output().len(), 1);
-    assert_eq!(resp.output().next().unwrap().content().len(), 1);
+    let line_count = resp.result().split('\n').count();
+    assert!(line_count >= 3, "line count is {line_count}");
 }
 
 #[tokio::test]
@@ -31,11 +31,6 @@ async fn it_sends_a_request_using_gpt_5nano() {
         .input("write a haiku about ai");
     let resp = client.send(&req).await;
     let resp = resp.expect("could not make OpenAI API request");
-    assert_eq!(resp.output().len(), 2);
-
-    let output = resp.output().nth(1).expect(&format!(
-        "could not get second element of output: {:?}",
-        resp
-    ));
-    assert_eq!(output.content().len(), 1);
+    let line_count = resp.result().split('\n').count();
+    assert!(line_count >= 3, "line count is {line_count}");
 }
