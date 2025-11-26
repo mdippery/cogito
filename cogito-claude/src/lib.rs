@@ -137,6 +137,23 @@ impl fmt::Display for ClaudeModel {
     }
 }
 
+/// Convenience module for splat imports.
+///
+/// To import the most common data structures and traits from this crate,
+/// add
+///
+/// ```
+/// use cogito_claude::prelude::*;
+/// ```
+///
+/// in your project.
+pub mod prelude {
+    pub use crate::ClaudeModel;
+    pub use crate::client::{ClaudeClient, ClaudeRequest, ClaudeResponse};
+    pub use cogito::AiModel;
+    pub use cogito::client::{AiClient, AiRequest, AiResponse};
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

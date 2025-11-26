@@ -207,6 +207,8 @@ pub mod prelude {
     pub use crate::OpenAIModel;
     pub use crate::client::{OpenAIClient, OpenAIRequest, OpenAIResponse};
     pub use cogito::AiModel;
+    pub use cogito::client::{AiClient, AiRequest, AiResponse};
+    pub use cogito::service::Service;
 }
 
 #[cfg(test)]
