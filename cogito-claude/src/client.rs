@@ -30,6 +30,7 @@
 //! [`cogito::service::Auth`]: https://docs.rs/cogito/latest/cogito/service/struct.Auth.html
 
 use crate::ClaudeModel;
+use crate::service::ClaudeService;
 use cogito::prelude::*;
 use hypertyper::prelude::*;
 use serde::{Deserialize, Serialize};
@@ -77,11 +78,11 @@ impl<T: HttpPost + Sync> ClaudeClient<T> {
     }
 }
 
-impl ClaudeClient<Service> {
+impl ClaudeClient<ClaudeService> {
     /// Create a new Claude API client using the given authentication data and
     /// the given factory to create underlying HTTP clients.
     pub fn new(auth: Auth, factory: HttpClientFactory) -> Self {
-        let service = Service::new(factory);
+        let service = ClaudeService::new(factory);
         Self::with_service(auth, service)
     }
 }

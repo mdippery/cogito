@@ -43,6 +43,7 @@
 //! [pricing documentation]: https://platform.claude.com/docs/en/about-claude/pricing
 
 pub mod client;
+pub mod service;
 
 use cogito::AiModel;
 use serde::{Deserialize, Serialize};

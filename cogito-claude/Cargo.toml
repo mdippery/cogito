@@ -16,6 +16,7 @@ rust-version.workspace = true
 [dependencies]
 cogito.workspace = true
 hypertyper.workspace = true
+reqwest.workspace = true
 serde = { workspace = true, features = ["derive"] }
 serde_json.workspace = true
 
