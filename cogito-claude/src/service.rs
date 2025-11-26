@@ -19,9 +19,8 @@
 //! [`hypertyper.service`]: https://docs.rs/hypertyper/latest/hypertyper/service/index.html
 //! [`Service`]: https://docs.rs/cogito/latest/cogito/service/struct.Service.html
 
-use futures_util::TryFutureExt;
 use hypertyper::prelude::*;
-use log::warn;
+use log::debug;
 use reqwest::header;
 use serde::Serialize;
 use serde::de::DeserializeOwned;
@@ -55,7 +54,7 @@ impl HttpPost for ClaudeService {
         D: Serialize + Sync,
         R: DeserializeOwned,
     {
-        let json_object = self
+        let response = self
             .client
             .post(uri)
             .header(header::CONTENT_TYPE, "application/json")
@@ -63,10 +62,11 @@ impl HttpPost for ClaudeService {
             .header("x-api-key", auth.api_key())
             .json(data)
             .send()
-            .inspect_err(|result| warn!("http error: {result}"))
-            .await?
-            .json::<R>()
             .await?;
+
+        debug!("HTTP response is:\n{response:?}");
+
+        let json_object = response.json::<R>().await?;
         Ok(json_object)
     }
 }

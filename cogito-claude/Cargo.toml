@@ -15,7 +15,6 @@ rust-version.workspace = true
 
 [dependencies]
 cogito.workspace = true
-futures-util.workspace = true
 hypertyper.workspace = true
 log.workspace = true
 reqwest.workspace = true
