@@ -151,6 +151,7 @@ impl fmt::Display for ClaudeModel {
 pub mod prelude {
     pub use crate::ClaudeModel;
     pub use crate::client::{ClaudeClient, ClaudeRequest, ClaudeResponse};
+    pub use crate::service::ClaudeService;
     pub use cogito::AiModel;
     pub use cogito::client::{AiClient, AiRequest, AiResponse};
 }

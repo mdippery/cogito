@@ -19,7 +19,6 @@
 //! [`hypertyper.service`]: https://docs.rs/hypertyper/latest/hypertyper/service/index.html
 //! [`Service`]: https://docs.rs/cogito/latest/cogito/service/struct.Service.html
 
-use cogito::prelude::Service;
 use hypertyper::prelude::*;
 use reqwest::header;
 use serde::Serialize;

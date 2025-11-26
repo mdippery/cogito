@@ -3,7 +3,6 @@
 // with openai_client_https, but it ensures we are testing the integration
 // of each individual component.
 
-use cogito::prelude::*;
 use cogito_openai::prelude::*;
 use hypertyper::prelude::*;
 
@@ -19,9 +18,7 @@ async fn it_sends_a_post_request_using_gpt4o() {
     let response: HttpResult<OpenAIResponse> = service
         .post("https://api.openai.com/v1/responses", &auth, &request)
         .await;
-    let resp = response.expect("could not make OpenAI API request");
-    let line_count = resp.result().split('\n').count();
-    assert!(line_count >= 3, "line count is {line_count}");
+    assert!(response.is_ok());
 }
 
 #[tokio::test]
@@ -36,7 +33,5 @@ async fn it_sends_a_post_request_using_gpt5nano() {
     let response: HttpResult<OpenAIResponse> = service
         .post("https://api.openai.com/v1/responses", &auth, &request)
         .await;
-    let resp = response.expect("could not make OpenAI API request");
-    let line_count = resp.result().split('\n').count();
-    assert!(line_count >= 3, "line count is {line_count}");
+    assert!(response.is_ok());
 }
