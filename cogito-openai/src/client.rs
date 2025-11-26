@@ -213,7 +213,7 @@ impl OpenAIResponse {
 /// Generated GPT output.
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(tag = "type", rename_all = "lowercase")]
-pub enum OpenAIOutput {
+enum OpenAIOutput {
     /// Contents of a meaningful response from the LLM.
     Message { content: Vec<OpenAIContent> },
 
@@ -246,7 +246,7 @@ impl OpenAIOutput {
 
 /// Content of GPT output.
 #[derive(Debug, Deserialize, Serialize)]
-pub struct OpenAIContent {
+struct OpenAIContent {
     // TODO: Use an enum, when I figure out what the possible values are
     #[serde(rename = "type")]
     content_type: String,
@@ -256,52 +256,16 @@ pub struct OpenAIContent {
 
 impl OpenAIContent {
     /// The content type.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # use cogito_openai::client::OpenAIContent;
-    /// let json_str = r#"{"type": "output_text", "text": "This is some text"}"#;
-    /// let content: OpenAIContent = serde_json::from_str(json_str).expect("could not parse json");
-    /// assert_eq!(content.content_type(), "output_text");
-    /// ```
     pub fn content_type(&self) -> &str {
         &self.content_type
     }
 
     /// True if the content should be shown to the user.
-    ///
-    /// # Examples
-    ///
-    /// It returns true if the content represents "output text":
-    ///
-    /// ```
-    /// # use cogito_openai::client::OpenAIContent;
-    /// let json_str = r#"{"type": "output_text", "text": "This is some text"}"#;
-    /// let content: OpenAIContent = serde_json::from_str(json_str).expect("could not parse json");
-    /// assert!(content.is_output_text());
-    /// ```
-    ///
-    /// But it returns false otherwise:
-    ///
-    /// ```
-    /// # use cogito_openai::client::OpenAIContent;
-    /// let json_str = r#"{"type": "other_content", "text": "This is some text"}"#;
-    /// let content: OpenAIContent = serde_json::from_str(json_str).expect("could not parse json");
-    /// assert!(!content.is_output_text());
-    /// ```
     pub fn is_output_text(&self) -> bool {
         self.content_type() == "output_text"
     }
 
     /// Generated GPT text.
-    ///
-    /// ```
-    /// # use cogito_openai::client::OpenAIContent;
-    /// let json_str = r#"{"type": "output_text", "text": "This is some text"}"#;
-    /// let content: OpenAIContent = serde_json::from_str(json_str).expect("could not parse json");
-    /// assert_eq!(content.text(), "This is some text");
-    /// ```
     pub fn text(&self) -> &str {
         &self.text
     }
@@ -749,6 +713,42 @@ mod test {
             let expected = "Silent circuits dream\nOf patterns we cannot see\nLearning to be kind";
             let actual = output.concatenate();
             assert_eq!(actual, expected);
+        }
+    }
+
+    mod content {
+        use super::super::*;
+
+        fn parse(json_str: &str) -> OpenAIContent {
+            serde_json::from_str(json_str).expect("could not parse json")
+        }
+
+        #[test]
+        fn it_returns_the_content_type() {
+            let json_str = r#"{"type": "output_text", "text": "This is some text"}"#;
+            let content = parse(json_str);
+            assert_eq!(content.content_type(), "output_text");
+        }
+
+        #[test]
+        fn it_returns_true_if_it_represents_output_text() {
+            let json_str = r#"{"type": "output_text", "text": "This is some text"}"#;
+            let content = parse(json_str);
+            assert!(content.is_output_text());
+        }
+
+        #[test]
+        fn it_returns_false_if_it_does_not_represent_output_text() {
+            let json_str = r#"{"type": "other_content", "text": "This is some text"}"#;
+            let content = parse(json_str);
+            assert!(!content.is_output_text());
+        }
+
+        #[test]
+        fn it_returns_text() {
+            let json_str = r#"{"type": "output_text", "text": "This is some text"}"#;
+            let content = parse(json_str);
+            assert_eq!(content.text(), "This is some text");
         }
     }
 }
