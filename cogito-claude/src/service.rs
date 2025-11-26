@@ -19,7 +19,9 @@
 //! [`hypertyper.service`]: https://docs.rs/hypertyper/latest/hypertyper/service/index.html
 //! [`Service`]: https://docs.rs/cogito/latest/cogito/service/struct.Service.html
 
+use futures_util::TryFutureExt;
 use hypertyper::prelude::*;
+use log::warn;
 use reqwest::header;
 use serde::Serialize;
 use serde::de::DeserializeOwned;
@@ -61,6 +63,7 @@ impl HttpPost for ClaudeService {
             .header("x-api-key", auth.api_key())
             .json(data)
             .send()
+            .inspect_err(|result| warn!("http error: {result}"))
             .await?
             .json::<R>()
             .await?;

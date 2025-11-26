@@ -15,9 +15,11 @@ rust-version = "1.85.1"
 
 [workspace.dependencies]
 cogito = { version = "0.2.0", path = "cogito" }
+futures-util = "0.3.31"
 hypertyper = { version = "0.3.0", git = "https://github.com/mdippery/hypertyper.git" }
 indoc = "2.0.7"
 itertools = "0.14.0"
+log = "0.4.27"
 pretty_assertions = "1.4.1"
 reqwest = "0.12.24"
 serde = "1.0.228"
