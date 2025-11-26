@@ -185,6 +185,7 @@ impl OpenAIResponse {
     ///
     /// [output]: OpenAIResponse::output
     /// [`result()`]: OpenAIResponse::result
+    // TODO: Should this be non-pub? It's the same thing as result().
     pub fn concatenate(&self) -> String {
         self.output()
             .map(|o| o.concatenate())
@@ -197,6 +198,8 @@ impl OpenAIResponse {
     ///
     /// There should be at least item in the output, but there could be
     /// multiple output objects.
+    // TODO: Should this be non-pub?
+    //       Will have to change integration tests if it is.
     pub fn output(&self) -> Iter<'_, OpenAIOutput> {
         self.output.iter()
     }

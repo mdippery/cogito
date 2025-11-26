@@ -33,6 +33,7 @@ use crate::ClaudeModel;
 use cogito::prelude::*;
 use hypertyper::prelude::*;
 use serde::{Deserialize, Serialize};
+use std::slice::Iter;
 
 #[cfg(doc)]
 use cogito::AiModel;
@@ -207,13 +208,24 @@ pub struct ClaudeResponse {
 
 impl AiResponse for ClaudeResponse {
     fn result(&self) -> String {
-        self.content
-            .iter()
+        self.content()
             .map(|c| c.text.as_str())
             .collect::<Vec<_>>()
             .join("\n")
             .trim()
             .to_string()
+    }
+}
+
+impl ClaudeResponse {
+    /// Claude API response output, as a series of responses.
+    ///
+    /// There should be at least one item in the output, but there could
+    /// be multiple output objects.
+    // TODO: This is private. Make OpenAIResponse::output() and
+    //       OpenAIResponse::concatenate() private to match?
+    fn content(&self) -> Iter<'_, ClaudeContent> {
+        self.content.iter()
     }
 }
 
