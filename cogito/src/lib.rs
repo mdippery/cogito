@@ -136,6 +136,6 @@ pub trait AiModel: Clone + Copy + Default + Debug {
 /// to use the most common Cogito traits and data structures in your project.
 pub mod prelude {
     pub use crate::AiModel;
-    pub use crate::client::{AiClient, AiError, AiRequest, AiResponse, AiResult};
+    pub use crate::client::{AiClient, AiRequest, AiResponse, AiResult};
     pub use crate::service::{Auth, Service};
 }

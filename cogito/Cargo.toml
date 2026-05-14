@@ -1,6 +1,6 @@
 [package]
 name = "cogito"
-version = "0.2.1-beta.0"
+version = "0.3.0-alpha.0"
 authors.workspace = true
 description = "Relentlessly generate AI slop using LLMs"
 readme.workspace = true
@@ -14,6 +14,7 @@ edition.workspace = true
 rust-version.workspace = true
 
 [dependencies]
+anyhow.workspace = true
 hypertyper.workspace = true
 reqwest.workspace = true
 serde.workspace = true

@@ -11,7 +11,6 @@
 //! [cogito-openai]: https://docs.rs/cogito-openai
 
 use crate::AiModel;
-pub use hypertyper::HttpError as AiError;
 
 /// A client for an AI service's API.
 ///
@@ -133,4 +132,4 @@ pub trait AiResponse {
 
 /// An API result that includes the response if successful or an error
 /// if unsuccessful.
-pub type AiResult<T> = Result<T, AiError>;
+pub type AiResult<T> = anyhow::Result<T>;

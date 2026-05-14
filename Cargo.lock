@@ -3,6 +3,12 @@
 version = 4
 
 [[package]]
+name = "anyhow"
+version = "1.0.102"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7f202df86484c868dbad7eaa557ef785d5c66295e41b460ef922eca0723b842c"
+
+[[package]]
 name = "atomic-waker"
 version = "1.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -89,8 +95,9 @@ dependencies = [
 
 [[package]]
 name = "cogito"
-version = "0.2.1-beta.0"
+version = "0.3.0-alpha.0"
 dependencies = [
+ "anyhow",
  "hypertyper",
  "reqwest",
  "serde",
@@ -98,7 +105,7 @@ dependencies = [
 
 [[package]]
 name = "cogito-claude"
-version = "0.1.1-beta.0"
+version = "0.2.0-alpha.0"
 dependencies = [
  "cogito",
  "hypertyper",
@@ -111,7 +118,7 @@ dependencies = [
 
 [[package]]
 name = "cogito-openai"
-version = "0.3.1-beta.0"
+version = "0.4.0-alpha.0"
 dependencies = [
  "cogito",
  "hypertyper",
@@ -427,13 +434,13 @@ dependencies = [
 
 [[package]]
 name = "hypertyper"
-version = "0.3.1-beta.0"
-source = "git+https://github.com/mdippery/hypertyper.git#269220f6756074741ee4bc564aee84cfe607e8f1"
+version = "0.4.0-alpha.0"
+source = "git+https://github.com/mdippery/hypertyper.git?branch=anyhow#f759609eb7a5fe0a698566d39002e57bf3a5e60f"
 dependencies = [
+ "anyhow",
  "reqwest",
  "serde",
  "serde_json",
- "thiserror",
 ]
 
 [[package]]
