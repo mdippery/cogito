@@ -89,7 +89,7 @@ dependencies = [
 
 [[package]]
 name = "cogito"
-version = "0.2.1"
+version = "0.2.2-alpha.0"
 dependencies = [
  "hypertyper",
  "reqwest",
@@ -98,7 +98,7 @@ dependencies = [
 
 [[package]]
 name = "cogito-claude"
-version = "0.1.1"
+version = "0.1.2-alpha.0"
 dependencies = [
  "cogito",
  "hypertyper",
@@ -111,7 +111,7 @@ dependencies = [
 
 [[package]]
 name = "cogito-openai"
-version = "0.3.1"
+version = "0.3.2-alpha.0"
 dependencies = [
  "cogito",
  "hypertyper",
@@ -427,8 +427,8 @@ dependencies = [
 
 [[package]]
 name = "hypertyper"
-version = "0.3.1"
-source = "git+https://github.com/mdippery/hypertyper.git#d4db779e8c8d4e1dc94265d6c4742484e8b67254"
+version = "0.4.0-alpha.0"
+source = "git+https://github.com/mdippery/hypertyper.git#d6840b3adb9ed02ae6f02029a0f26e596abd4fa3"
 dependencies = [
  "reqwest",
  "serde",
