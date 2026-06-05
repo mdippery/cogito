@@ -89,7 +89,7 @@ dependencies = [
 
 [[package]]
 name = "cogito"
-version = "0.2.2-alpha.1"
+version = "0.2.2"
 dependencies = [
  "hypertyper",
  "reqwest",
@@ -98,7 +98,7 @@ dependencies = [
 
 [[package]]
 name = "cogito-claude"
-version = "0.1.2-alpha.1"
+version = "0.1.2"
 dependencies = [
  "cogito",
  "hypertyper",
@@ -111,7 +111,7 @@ dependencies = [
 
 [[package]]
 name = "cogito-openai"
-version = "0.3.2-alpha.1"
+version = "0.3.2"
 dependencies = [
  "cogito",
  "hypertyper",
@@ -427,8 +427,8 @@ dependencies = [
 
 [[package]]
 name = "hypertyper"
-version = "0.4.0-alpha.1"
-source = "git+https://github.com/mdippery/hypertyper.git#23b44f2d5f091171f043d24ed18f1c18184b53d3"
+version = "0.4.0"
+source = "git+https://github.com/mdippery/hypertyper.git#7700dafeca43024dff7d88cd26d50e6ba09621c5"
 dependencies = [
  "reqwest",
  "serde",
@@ -661,9 +661,9 @@ checksum = "6373607a59f0be73a39b6fe456b8192fcc3585f602af20751600e974dd455e77"
 
 [[package]]
 name = "log"
-version = "0.4.29"
+version = "0.4.32"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5e5032e24019045c762d3c0f28f5b6b8bbf38563a65908389bf7978758920897"
+checksum = "953f07c43838f8e6f9758cab68bf5bed85465e7587ebe0b823f1bcd81978ad3a"
 
 [[package]]
 name = "lru-slab"
@@ -863,9 +863,9 @@ dependencies = [
 
 [[package]]
 name = "reqwest"
-version = "0.13.3"
+version = "0.13.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "62e0021ea2c22aed41653bc7e1419abb2c97e038ff2c33d0e1309e49a97deec0"
+checksum = "219c5811de6525e5416c7d5d53bb656d3afdbc6c5af816e0802bcfa42dbdc1c3"
 dependencies = [
  "base64",
  "bytes",
@@ -1090,9 +1090,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.149"
+version = "1.0.150"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "83fc039473c5595ace860d8c4fafa220ff474b3fc6bfdb4293327f1a37e94d86"
+checksum = "e8014e44b4736ed0538adeecded0fce2a272f22dc9578a7eb6b2d9993c74cfb9"
 dependencies = [
  "itoa",
  "memchr",
